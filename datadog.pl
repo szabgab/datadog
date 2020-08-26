@@ -2,11 +2,16 @@ use strict;
 use warnings;
 use v5.30;
 
+my ($debug) = @ARGV;
+
 eval "use Net::Dogstatsd";    ## no critic
 my $datadog = ! $@;
 
+my @planets = ('Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn');
+
 my %data = (
     elapsed_time => rand(),
+    request      => $planets[int(rand() * scalar @planets)],
 );
 
 log_to_datadog(\%data);
@@ -17,7 +22,9 @@ sub log_to_datadog {
 	my ($data) = @_;
 
 	return if not $datadog;
-    say 'sending';
+    if ($debug) {
+        say 'sending';
+    }
 
 	my $dogstatsd = Net::Dogstatsd->new();
 	my $socket    = $dogstatsd->get_socket();
