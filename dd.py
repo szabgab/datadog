@@ -1,5 +1,6 @@
 from datadog import initialize, statsd
 import random
+import time
 
 # pip install datadog
 # datatog.py would create a circular import
@@ -10,5 +11,13 @@ options = {
 
 initialize(**options)
 
-statsd.gauge('python_demo.random', random.random())
+start = time.time()
+print(start)
+
+while start + 60 >= time.time():
+    sleep = random.random()
+    print(f"sleep: {sleep}")
+    statsd.gauge('python_demo.random', random.random())
+    statsd.increment('python_demo.hit')
+    time.sleep(sleep)
 
