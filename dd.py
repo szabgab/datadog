@@ -12,11 +12,11 @@ options = {
 initialize(**options)
 
 start = time.time()
-print(start)
+#print(start)
 
 while start + 60 >= time.time():
     sleep = random.random()
-    print(f"sleep: {sleep}")
+    #print(f"sleep: {sleep}")
     statsd.gauge('python_demo.random', random.random())
     statsd.increment('python_demo.hit')
     time.sleep(sleep)
